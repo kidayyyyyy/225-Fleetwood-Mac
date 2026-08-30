@@ -4,7 +4,7 @@ create table Staff (
     lastName varchar(30),
     phone varchar(30),
     email varchar(30),
-    position varchar(30)
+    position varchar(30) check (position in ('Manager', 'Staff', 'Retired'))
 );
 
 create table Customer (
@@ -25,31 +25,29 @@ create table Branch (
 );
 
 create table Category (
-    parentCategoryID int primary key,
+    categoryID int primary key,
     categoryName varchar(30),
-    childCategoryID int default null,
+    parentCategoryID int DEFAULT null,
 
-    foreign key (childCategoryID) references Category(parentCategoryID)
+    foreign key (parentCategoryID) references Category (categoryID)
 );
 
 create table Equipment (
     equipmentID int primary key,
-    equip_name varchar(30),
-    equip_descrip varchar(100),
-    specification varchar(100),
+    equipmentName varchar(30),
+    equipmentDesc varchar(100),
     parentCategoryID int,
-
-    foreign key (parentCategoryID) references Category(parentCategoryID)
+    foreign key (parentCategoryID) references Category (parentCategoryID)
 );
 
 create table Unit (
     unitID int primary key,
-    unit_quantity int not null,
+    unitStatus varchar(30) check (unitStatus in ('Available', 'Rented', 'Maintenance')),
     equipmentID int,
     branchID int,
 
-    foreign key (unitID) references Equipment(equipmentID),
-    foreign key (branchID) references Branch(branchID)
+    foreign key (unitID) references Equipment (equipmentID),
+    foreign key (branchID) references Branch (branchID)
 );
 
 
@@ -63,10 +61,10 @@ create table RentSchedule (
 
     primary key (rentalID, customerID, unitID),
 
-    foreign key (customerID) references Customer(customerID),
-    foreign key (unitID) references Unit(unitID),
-    foreign key (pickupBranchID) references Branch(branchID),
-    foreign key (returnBranchID) references Branch(branchID),
+    foreign key (customerID) references Customer (customerID),
+    foreign key (unitID) references Unit (unitID),
+    foreign key (pickupBranchID) references Branch (branchID),
+    foreign key (returnBranchID) references Branch (branchID),
     
     pickupDate date not null,
     returnDate date,
@@ -91,8 +89,19 @@ create table Maintenance (
     completedDate date,
     notes varchar(50),
 
-    foreign key (unitID) references Unit(unitID),
-    foreign key (staffID) references Staff(staffID),
-    foreign key (companyID) references ServiceCompany(companyID)
+    foreign key (unitID) references Unit (unitID),
+    foreign key (staffID) references Staff (staffID),
+    foreign key (companyID) references ServiceCompany (companyID)
 )
 
+insert into Category(categoryID, categoryName, parentCategoryID) values
+(1, 'Electronics', null),
+(2, 'Computers', 1),
+(3, 'Accessories', 1),
+(4, 'Monitors', 2),
+(5, 'Keyboards', 2);
+
+insert into Equipment(equipmentID, equipmentName, equipmentDesc, parentCategoryID) values
+(1, 'Equipment 1', 'Description 1', 1),
+(2, 'Equipment 2', 'Description 2', 2),
+(3, 'Equipment 3', 'Description 3', 3);
