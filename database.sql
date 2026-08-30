@@ -1,3 +1,5 @@
+DROP TABLE `Branch`, `Category`, `Customer`, `Equipment`, `RentSchedule`, `ServiceCompany`, `Staff`, `Unit`;
+
 create table Staff (
     staffID int primary key,
     firstName varchar(30),
@@ -36,8 +38,8 @@ create table Equipment (
     equipmentID int primary key,
     equipmentName varchar(30),
     equipmentDesc varchar(100),
-    parentCategoryID int,
-    foreign key (parentCategoryID) references Category (parentCategoryID)
+    categoryID int,
+    foreign key (categoryID) references Category (categoryID)
 );
 
 create table Unit (
@@ -46,7 +48,7 @@ create table Unit (
     equipmentID int,
     branchID int,
 
-    foreign key (unitID) references Equipment (equipmentID),
+    foreign key (equipmentID) references Equipment (equipmentID),
     foreign key (branchID) references Branch (branchID)
 );
 
@@ -110,7 +112,7 @@ insert into Category(categoryID, categoryName, parentCategoryID) values
 (4, 'Monitors', 2),
 (5, 'Keyboards', 2);
 
-insert into Equipment(equipmentID, equipmentName, equipmentDesc, parentCategoryID) values
+insert into Equipment(equipmentID, equipmentName, equipmentDesc, categoryID) values
 (1, 'Equipment 1', 'Description 1', 1),
 (2, 'Equipment 2', 'Description 2', 2),
 (3, 'Equipment 3', 'Description 3', 3);
