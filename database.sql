@@ -10,11 +10,11 @@ drop table
 );
 
 create table CATEGORY (
-    categoryID int primary,
+    categoryID int primary key,
     categoryName varchar(30),
-    parentCategoryID int default null,
+    parentCategoryID int DEFAULT null,
 
-    foreign key parentCategoryID references CATEGORY(categoryID)
+    foreign key (parentCategoryID) references CATEGORY(categoryID)
 );
 
 create table EQUIPMENT(
