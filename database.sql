@@ -66,10 +66,10 @@ create table RentSchedule (
     foreign key (pickupBranchID) references Branch (branchID),
     foreign key (returnBranchID) references Branch (branchID),
     
-    pickupDate date not null,
-    returnDate date,
-    actualPickupDate date,
-    actualReturnDate date
+    pickupDate timestamp not null,
+    returnDate timestamp not null,
+    actualPickupDate timestamp,
+    actualReturnDate timestamp
 );
 
 create table ServiceCompany(
