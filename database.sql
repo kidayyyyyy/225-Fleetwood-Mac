@@ -3,12 +3,6 @@ drop table SERVICE_COMPANY;
 drop table rent_schedule;
 drop table 
 
---create table parentcategory(
-    parentCategoryID int default null,
-    parentcat_name varchar(30),
-    categoryID int,
-);
-
 create table CATEGORY (
     categoryID int primary key,
     categoryName varchar(30),
@@ -18,14 +12,15 @@ create table CATEGORY (
 );
 
 create table EQUIPMENT(
-    equipmentID int primary,
+    equipmentID int primary key,
     equip_name varchar(30),
     equip_descrip varchar(100),
     specification varchar(100),
     rcm_SafetyEquipment varchar(100),
     safetyNotes varchar(100),
+    categoryID INT,
 
-    foreign key categoryID references CATEGORY(categoryID)
+    foreign key (categoryID) references CATEGORY(categoryID)
 );
 
 create table STAFF(
