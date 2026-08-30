@@ -16,12 +16,12 @@ create table Customer (
 );
 
 create table Branch (
-branchID int primary key,
-branchAddress varchar(100),
-phone varchar(10),
-managerID int,
+    branchID int primary key,
+    branchAddress varchar(100),
+    phone varchar(10),
+    managerID int,
 
-foreign key (managerID) references Staff(staffID)
+    foreign key (managerID) references Staff(staffID)
 );
 
 create table Category (
@@ -37,8 +37,6 @@ create table Equipment (
     equip_name varchar(30),
     equip_descrip varchar(100),
     specification varchar(100),
-    rcm_SafetyEquipment varchar(100),
-    safetyNotes varchar(100),
     parentCategoryID int,
 
     foreign key (parentCategoryID) references Category(parentCategoryID)
@@ -46,8 +44,7 @@ create table Equipment (
 
 create table Unit (
     unitID int primary key,
-    unitStatus varchar(30),
-    -- to do: check for unit status
+    unit_quantity int not null,
     equipmentID int,
     branchID int,
 
