@@ -24,7 +24,7 @@ create table EQUIPMENT(
 );
 
 create table STAFF(
-    staffID int primary,
+    staffID int primary key,
     firstName varchar(30),
     lastName varchar(30),
     phone varchar(30),
@@ -38,7 +38,7 @@ main_address varchar(50),
 Phone varchar(30),
 managerID int,
 
-foreign key managerID references STAFF(staffID)
+foreign key (managerID) references STAFF(staffID)
 );
 
 ALTER TABLE STAFF
@@ -52,8 +52,8 @@ create table UNIT (
     equipmentID int,
     branchID int,
 
-    foreign key equipmentID references EQUIPMENT(equipmentID),
-    foreign key branchID references BRANCH(branchID),
+    foreign key (equipmentID) references EQUIPMENT(equipmentID),
+    foreign key (branchID) references BRANCH(branchID),
 );
 
 create table CUSTOMER (
@@ -71,10 +71,10 @@ create table rent_schedule(
     pickupBranchID int,
     returnBranchID int,
 
-    foreign key customerID references CUSTOMER(customerID),
-    foreign key unitID references UNIT(unitID),
-    foreign key pickupBranchID references BRANCH(branchID),
-    foreign key returnBranchID references BRANCH(branchID),
+    foreign key (customerID) references CUSTOMER(customerID),
+    foreign key (unitID) references UNIT(unitID),
+    foreign key (pickupBranchID) references BRANCH(branchID),
+    foreign key (returnBranchID) references BRANCH(branchID),
     
     pickupDate date,
     returnDate date,
@@ -83,7 +83,7 @@ create table rent_schedule(
 ;)
 
 create table SERVICE_COMPANY(
-    companyID int primary,
+    companyID int primary key,
     comp_name varchar(30),
     Phone varchar(30),
     Email varchar(30)
@@ -95,9 +95,9 @@ create table maintenance (
     staffID int,
     companyID int,
 
-    foreign key unitID references UNIT(unitID),
-    foreign key staffID references STAFF(staffID),
-    foreign key companyID references SERVICE_COMPANY(companyID),
+    foreign key (unitID) references UNIT(unitID),
+    foreign key (staffID) references STAFF(staffID),
+    foreign key (companyID) references SERVICE_COMPANY(companyID),
 
     scheduledDate date,
     completedDate date,
