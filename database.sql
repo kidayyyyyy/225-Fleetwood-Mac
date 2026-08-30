@@ -1,67 +1,13 @@
-drop table maintenance;
-drop table SERVICE_COMPANY;
-drop table rent_schedule;
-drop table 
-
---create table parentcategory(
-    parentCategoryID int default null,
-    parentcat_name varchar(30),
-    categoryID int,
-);
-
-create table CATEGORY (
-    categoryID int primary,
-    categoryName varchar(30),
-    parentCategoryID int default null,
-
-    foreign key parentCategoryID references CATEGORY(categoryID)
-);
-
-create table EQUIPMENT(
-    equipmentID int primary,
-    equip_name varchar(30),
-    equip_descrip varchar(100),
-    specification varchar(100),
-    rcm_SafetyEquipment varchar(100),
-    safetyNotes varchar(100),
-
-    foreign key categoryID references CATEGORY(categoryID)
-);
-
-create table STAFF(
-    staffID int primary,
+create table Staff (
+    staffID int primary key,
     firstName varchar(30),
     lastName varchar(30),
     phone varchar(30),
     email varchar(30),
-    position varchar(30),
+    position varchar(30)
 );
 
-create table BRANCH(
-branchID int primary key,
-main_address varchar(50),
-Phone varchar(30),
-managerID int,
-
-foreign key managerID references STAFF(staffID)
-);
-
-ALTER TABLE STAFF
-ADD CONSTRAINT
-FOREIGN KEY (branchID) 
-REFERENCES BRANCH(branchID);
-
-create table UNIT (
-    unitID int primary key,
-    unit_status varchar(30),
-    equipmentID int,
-    branchID int,
-
-    foreign key equipmentID references EQUIPMENT(equipmentID),
-    foreign key branchID references BRANCH(branchID),
-);
-
-create table CUSTOMER (
+create table Customer (
     customerID int primary key,
     firstName varchar(30),
     lastName varchar(30),
@@ -69,44 +15,87 @@ create table CUSTOMER (
     phone varchar(30)
 );
 
-create table rent_schedule(
-    rentalID int primary key,
+create table Branch (
+branchID int primary key,
+branchAddress varchar(100),
+phone varchar(10),
+managerID int,
+
+foreign key (managerID) references Staff(staffID)
+);
+
+create table Category (
+    parentCategoryID int primary key,
+    categoryName varchar(30),
+    childCategoryID int default null,
+
+    foreign key (childCategoryID) references Category(parentCategoryID)
+);
+
+create table Equipment (
+    equipmentID int primary key,
+    equip_name varchar(30),
+    equip_descrip varchar(100),
+    specification varchar(100),
+    rcm_SafetyEquipment varchar(100),
+    safetyNotes varchar(100),
+    parentCategoryID int,
+
+    foreign key (parentCategoryID) references Category(parentCategoryID)
+);
+
+create table Unit (
+    unitID int primary key,
+    unitStatus varchar(30),
+    -- to do: check for unit status
+    equipmentID int,
+    branchID int,
+
+    foreign key (unitID) references Equipment(equipmentID),
+    foreign key (branchID) references Branch(branchID)
+);
+
+
+
+create table RentSchedule (
+    rentalID int,
     customerID int,
     unitID int,
     pickupBranchID int,
-    returnBranchID int,
+    returnBranchID int default null,
 
-    foreign key customerID references CUSTOMER(customerID),
-    foreign key unitID references UNIT(unitID),
-    foreign key pickupBranchID references BRANCH(branchID),
-    foreign key returnBranchID references BRANCH(branchID),
+    primary key (rentalID, customerID, unitID),
+
+    foreign key (customerID) references Customer(customerID),
+    foreign key (unitID) references Unit(unitID),
+    foreign key (pickupBranchID) references Branch(branchID),
+    foreign key (returnBranchID) references Branch(branchID),
     
-    pickupDate date,
+    pickupDate date not null,
     returnDate date,
     actualPickupDate date,
     actualReturnDate date
-;)
-
-create table SERVICE_COMPANY(
-    companyID int primary,
-    comp_name varchar(30),
-    Phone varchar(30),
-    Email varchar(30)
 );
 
-create table maintenance (
+create table ServiceCompany(
+    companyID int primary key,
+    companyName varchar(30),
+    phone varchar(30),
+    email varchar(30)
+);
+
+create table Maintenance (
     maintenanceID int primary key,
     unitID int,
     staffID int,
     companyID int,
 
-    foreign key unitID references UNIT(unitID),
-    foreign key staffID references STAFF(staffID),
-    foreign key companyID references SERVICE_COMPANY(companyID),
-
     scheduledDate date,
     completedDate date,
-    notes varchar(50)
-);
+    notes varchar(50),
 
+    foreign key (unitID) references Unit(unitID),
+    foreign key (staffID) references Staff(staffID),
+    foreign key (companyID) references ServiceCompany(companyID)
+)
 
