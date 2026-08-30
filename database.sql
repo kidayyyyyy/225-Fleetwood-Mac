@@ -10,9 +10,9 @@ drop table
 );
 
 create table CATEGORY (
-    categoryID int primary default null,
+    categoryID int primary,
     categoryName varchar(30),
-    parentCategoryID int,
+    parentCategoryID int default null,
 
     foreign key parentCategoryID references CATEGORY(categoryID)
 );
