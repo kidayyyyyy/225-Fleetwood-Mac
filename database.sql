@@ -92,7 +92,16 @@ create table Maintenance (
     foreign key (unitID) references Unit (unitID),
     foreign key (staffID) references Staff (staffID),
     foreign key (companyID) references ServiceCompany (companyID)
-)
+);
+
+insert into Staff(staffID, firstName, lastName, phone, email, position) values
+(1, 'John', 'Doe', '555-1234-234', 'john.doe@example.com', 'Manager'),
+(2, 'Jane', 'Smith', '555-5678-567', 'jane.smith@example.com', 'Manager');
+
+
+insert into Branch(branchID, branchAddress, phone, managerID) values
+(1, '123 Main St', '555-1234', 1),
+(2, '456 Elm St', '555-5678', 2);
 
 insert into Category(categoryID, categoryName, parentCategoryID) values
 (1, 'Electronics', null),
@@ -105,3 +114,12 @@ insert into Equipment(equipmentID, equipmentName, equipmentDesc, parentCategoryI
 (1, 'Equipment 1', 'Description 1', 1),
 (2, 'Equipment 2', 'Description 2', 2),
 (3, 'Equipment 3', 'Description 3', 3);
+
+insert into Unit(unitID, unitStatus, equipmentID, branchID) values
+(1, 'Available', 1, 1),
+(2, 'Rented', 2, 1),
+(3, 'Maintenance', 3, 2),
+(4, 'Available', 3, 2),
+(5, 'Available', 3, 2);
+
+
