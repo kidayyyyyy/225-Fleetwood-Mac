@@ -38,6 +38,7 @@ create table Equipment (
     equipmentID int primary key,
     equipmentName varchar(30),
     equipmentDesc varchar(100),
+    rentedTimes int default 0,
     categoryID int,
     foreign key (categoryID) references Category (categoryID)
 );
@@ -47,7 +48,6 @@ create table Unit (
     unitStatus varchar(30) check (unitStatus in ('Available', 'Rented', 'Maintenance')),
     equipmentID int,
     branchID int,
-
     foreign key (equipmentID) references Equipment (equipmentID),
     foreign key (branchID) references Branch (branchID)
 );
