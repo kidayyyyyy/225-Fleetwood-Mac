@@ -6,7 +6,7 @@ create table Staff (
     lastName varchar(30),
     phone varchar(30),
     email varchar(60),
-    position varchar(30) check (position in ('Manager', 'Staff', 'Retired'))
+    position varchar(30) check (position in ('Manager', 'Staff', 'Left'))
 );
 
 create table Customer (
@@ -27,8 +27,11 @@ create table Branch (
 );
 
 create table Category (
+    -- This is the primary key
     categoryID int primary key,
     categoryName varchar(30),
+    -- If this category is a subcategory, this will contain the ID of the parent category
+    -- If it is a top-level category, this will be null
     parentCategoryID int DEFAULT null,
 
     foreign key (parentCategoryID) references Category (categoryID)
@@ -57,7 +60,9 @@ create table RentSchedule (
     customerID int,
     unitID int,
     pickupBranchID int,
+    -- Since the customer may return the unit to a different branch, this can be null if the customer has not yet returned the unit
     returnBranchID int default null,
+    -- Pickup and return dates are needed
     pickupDate timestamp not null,
     returnDate timestamp not null,
     actualPickupDate timestamp,
@@ -80,11 +85,13 @@ create table ServiceCompany(
 create table Maintenance (
     maintenanceID int primary key,
     unitID int,
+    -- Staff ID or company ID will be used to know who is performing the maintenance
     staffID int,
     companyID int,
 
-    scheduledDate date,
-    completedDate date,
+    -- Timestamp for 
+    scheduledDate timestamp not null,
+    completedDate timestamp,
     notes varchar(100),
 
     foreign key (unitID) references Unit (unitID),
@@ -92,14 +99,14 @@ create table Maintenance (
     foreign key (companyID) references ServiceCompany (companyID)
 );
 
--- Insert sample data into the tables
+-- Insert statements for sample data into the tables
 
 insert into Staff(staffID, firstName, lastName, phone, email, position) values
 (1, 'Grant', 'Ferguson', '027 481 2093', 'grant.ferguson@equipeaserentals.co.nz', 'Manager'),
 (2, 'Whitney', 'Marsh', '027 552 6614', 'whitney.marsh@equipeaserentals.co.nz', 'Manager'),
 (3, 'Tama', 'Ropata', '021 340 7758', 'tama.ropata@equipeaserentals.co.nz', 'Staff'),
 (4, 'Aroha', 'Winiata', '022 918 4471', 'aroha.winiata@equipeaserentals.co.nz', 'Staff'),
-(5, 'Colin', 'Baxter', '021 662 0038', 'colin.baxter@equipeaserentals.co.nz', 'Retired');
+(5, 'Colin', 'Baxter', '021 662 0038', 'colin.baxter@equipeaserentals.co.nz', 'Left');
  
 insert into Branch(branchID, branchAddress, phone, managerID) values
 (1, '184 Anglesea Street, Hamilton Central, Hamilton 3204', '0783901220', 1),
@@ -144,16 +151,16 @@ insert into ServiceCompany(companyID, companyName, phone, email) values
 (4, 'Fix It People', '07 855 9999', 'service@fixitpeople.co.nz');
  
 insert into Maintenance(maintenanceID, unitID, staffID, companyID, scheduledDate, completedDate, notes) values
-(1, 3, 3, 1, '2026-08-25', null, 'Mower not starting, suspected fouled spark plug'),
-(2, 7, 4, 1, '2026-08-20', '2026-08-22', 'Replaced worn SDS chuck, drill tested and returned to fleet'),
-(3, 7, 4, 1, '2026-12-20', '2026-12-22', 'No issues found, drill returned to fleet'),
-(4, 7, 4, 1, '2026-08-20', '2026-08-22', 'Drill tested and returned to fleet');
+(1, 3, 3, 1, '2026-08-25 09:00:00', '2026-08-29 09:00:00', 'Mower not starting, suspected fouled spark plug'),
+(2, 7, 4, 1, '2026-08-20 09:00:00', '2026-08-22 09:00:00', 'Replaced worn SDS chuck, drill tested and returned to fleet'),
+(3, 7, 4, 1, '2026-12-20 09:00:00', '2026-12-22 09:00:00', 'No issues found, drill returned to fleet'),
+(4, 7, 4, 1, '2026-08-20 09:00:00', '2026-08-22 09:00:00', 'Drill tested and returned to fleet');
  
 insert into RentSchedule(rentalID, customerID, unitID, pickupBranchID, returnBranchID, pickupDate, returnDate) values
-(1, 1, 1, 1, null, '2026-09-05 09:00:00', null),
-(2, 1, 1, 1, null, '2026-09-05 09:00:00', null),
-(3, 1, 1, 1, null, '2026-09-05 09:00:00', null),
-(4, 1, 1, 1, null, '2026-09-05 09:00:00', null);
+(1, 1, 1, 1, null, '2026-09-05 09:00:00', '2026-09-06 09:00:00'),
+(2, 1, 1, 1, null, '2026-09-05 09:00:00', '2026-09-06 09:00:00'),
+(3, 1, 1, 1, null, '2026-09-05 09:00:00', '2026-09-06 09:00:00'),
+(4, 1, 1, 1, null, '2026-09-05 09:00:00', '2026-09-06 09:00:00');
 
 -- Select statements
 
