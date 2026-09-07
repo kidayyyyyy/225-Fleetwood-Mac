@@ -103,7 +103,9 @@ insert into Staff(staffID, firstName, lastName, phone, email, position) values
  
 insert into Branch(branchID, branchAddress, phone, managerID) values
 (1, '184 Anglesea Street, Hamilton Central, Hamilton 3204', '0783901220', 1),
-(2, '58 Maui Street, Pukete, Hamilton 3200', '0788504317', 2);
+(2, '58 Maui Street, Pukete, Hamilton 3200', '0788504317', 2),
+(3, '20 Maui Street, Pukete, Hamilton 3200', '0788504317', 2),
+(4, '23 Maui Street, Pukete, Hamilton 3200', '0788504317', 2);
  
 insert into Category(categoryID, categoryName, parentCategoryID) values
 (1, 'Power Tools', null),
@@ -132,18 +134,26 @@ insert into Unit(unitID, unitStatus, equipmentID, branchID) values
 insert into Customer(customerID, firstName, lastName, email, phone) values
 (1, 'Marcus', 'Delaney', 'marcus.delaney@gmail.com', '021 774 3390'),
 (2, 'Huia', 'Ngata', 'huia.ngata@outlook.com', '022 401 6685'),
-(3, 'Sione', 'Fifita', 'sione.fifita@yahoo.co.nz', '027 218 5539');
+(3, 'Sione', 'Fifita', 'sione.fifita@yahoo.co.nz', '027 218 5539'),
+(4, 'Loneet', 'Velaidan', 'loneet.velaidan@yahoo.co.nz', '027 222 5539');
  
 insert into ServiceCompany(companyID, companyName, phone, email) values
 (1, 'Waikato Small Engine Repairs', '07 847 3321', 'bookings@waikatosmallengine.co.nz'),
-(2, 'Hamilton Hydraulics & Lift Services', '07 855 9042', 'service@hamiltonhydraulics.co.nz');
+(2, 'Hamilton Hydraulics & Lift Services', '07 855 9042', 'service@hamiltonhydraulics.co.nz'),
+(3, 'Easy Fixing', '07 999 9042', 'service@easyfixing.co.nz'),
+(4, 'Fix It People', '07 855 9999', 'service@fixitpeople.co.nz');
  
 insert into Maintenance(maintenanceID, unitID, staffID, companyID, scheduledDate, completedDate, notes) values
 (1, 3, 3, 1, '2026-08-25', null, 'Mower not starting, suspected fouled spark plug'),
-(2, 7, 4, 1, '2026-08-20', '2026-08-22', 'Replaced worn SDS chuck, drill tested and returned to fleet');
+(2, 7, 4, 1, '2026-08-20', '2026-08-22', 'Replaced worn SDS chuck, drill tested and returned to fleet'),
+(3, 7, 4, 1, '2026-12-20', '2026-12-22', 'No issues found, drill returned to fleet'),
+(4, 7, 4, 1, '2026-08-20', '2026-08-22', 'Drill tested and returned to fleet');
  
 insert into RentSchedule(rentalID, customerID, unitID, pickupBranchID, returnBranchID, pickupDate, returnDate) values
-(1, 1, 1, 1, null, '2026-09-05 09:00:00', null);
+(1, 1, 1, 1, null, '2026-09-05 09:00:00', null),
+(2, 1, 1, 1, null, '2026-09-05 09:00:00', null),
+(3, 1, 1, 1, null, '2026-09-05 09:00:00', null),
+(4, 1, 1, 1, null, '2026-09-05 09:00:00', null);
 
 -- Select statements
 
