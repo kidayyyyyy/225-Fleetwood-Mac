@@ -166,7 +166,7 @@ insert into RentSchedule(rentalID, customerID, unitID, pickupBranchID, returnBra
 (3, 1, 1, 1, null, '2026-09-05 09:00:00', '2026-09-06 09:00:00'),
 (4, 1, 1, 1, null, '2026-09-05 09:00:00', '2026-09-06 09:00:00');
 
--- Select statements
+-- Select statement
 
 select Unit.unitID, Equipment.equipmentName, Unit.unitStatus, Branch.branchAddress from Equipment
 inner join Unit on Equipment.equipmentID = Unit.equipmentID
