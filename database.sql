@@ -2,26 +2,27 @@ drop table if exists `Branch`, `Category`, `Customer`, `Equipment`, `RentSchedul
 
 create table Staff (
     staffID int primary key,
-    firstName varchar(30),
+    firstName varchar(30) not null,
     lastName varchar(30),
-    phone varchar(30),
+    phone varchar(30) not null,
     email varchar(60),
-    position varchar(30) check (position in ('Manager', 'Staff', 'Left'))
+    position varchar(30) not null check (position in ('Manager', 'Staff', 'Left')) 
 );
 
 create table Customer (
     customerID int primary key,
-    firstName varchar(30),
+    firstName varchar(30) not null,
     lastName varchar(30),
+    -- Email is optional but phone is needed for contact
     email varchar(30),
-    phone varchar(30)
+    phone varchar(30) not null
 );
 
 create table Branch (
     branchID int primary key,
-    branchAddress varchar(100),
-    phone varchar(10),
-    managerID int,
+    branchAddress varchar(100) not null,
+    phone varchar(10) not null,
+    managerID int not null,
 
     foreign key (managerID) references Staff(staffID)
 );
@@ -29,8 +30,8 @@ create table Branch (
 create table Category (
     -- This is the primary key
     categoryID int primary key,
-    categoryName varchar(30),
-    -- If this category is a subcategory, this will contain the ID of the parent category
+    categoryName varchar(30) not null,
+    -- If category is a subcategory, this will contain the ID of the parent category
     -- If it is a top-level category, this will be null
     parentCategoryID int DEFAULT null,
 
@@ -39,18 +40,19 @@ create table Category (
 
 create table Equipment (
     equipmentID int primary key,
-    equipmentName varchar(30),
+    equipmentName varchar(30) not null,
     equipmentDesc varchar(100),
+    -- Used to show rank equipment by popularity
     rentedTimes int default 0,
-    categoryID int,
+    categoryID int not null,
     foreign key (categoryID) references Category (categoryID)
 );
 
 create table Unit (
     unitID int primary key,
     unitStatus varchar(30) check (unitStatus in ('Available', 'Rented', 'Maintenance')),
-    equipmentID int,
-    branchID int,
+    equipmentID int not null,
+    branchID int not null,
     foreign key (equipmentID) references Equipment (equipmentID),
     foreign key (branchID) references Branch (branchID)
 );
@@ -59,10 +61,11 @@ create table RentSchedule (
     rentalID int,
     customerID int,
     unitID int,
-    pickupBranchID int,
+    pickupBranchID int not null,
     -- Since the customer may return the unit to a different branch, this can be null if the customer has not yet returned the unit
     returnBranchID int default null,
     -- Pickup and return dates are needed
+    -- Timestamp used to store date and time of pickup and return
     pickupDate timestamp not null,
     returnDate timestamp not null,
     actualPickupDate timestamp,
@@ -77,14 +80,15 @@ create table RentSchedule (
 
 create table ServiceCompany(
     companyID int primary key,
-    companyName varchar(60),
-    phone varchar(30),
+    companyName varchar(60) not null,
+    companyAddress varchar(100) not null,
+    phone varchar(30) not null,
     email varchar(60)
 );
 
 create table Maintenance (
     maintenanceID int primary key,
-    unitID int,
+    unitID int not null,
     -- Staff ID or company ID will be used to know who is performing the maintenance
     staffID int,
     companyID int,
@@ -144,11 +148,11 @@ insert into Customer(customerID, firstName, lastName, email, phone) values
 (3, 'Sione', 'Fifita', 'sione.fifita@yahoo.co.nz', '027 218 5539'),
 (4, 'Loneet', 'Velaidan', 'loneet.velaidan@yahoo.co.nz', '027 222 5539');
  
-insert into ServiceCompany(companyID, companyName, phone, email) values
-(1, 'Waikato Small Engine Repairs', '07 847 3321', 'bookings@waikatosmallengine.co.nz'),
-(2, 'Hamilton Hydraulics & Lift Services', '07 855 9042', 'service@hamiltonhydraulics.co.nz'),
-(3, 'Easy Fixing', '07 999 9042', 'service@easyfixing.co.nz'),
-(4, 'Fix It People', '07 855 9999', 'service@fixitpeople.co.nz');
+insert into ServiceCompany(companyID, companyName, companyAddress, phone, email) values
+(1, 'Waikato Small Engine Repairs', '123 Main Street', '07 847 3321', 'bookings@waikatosmallengine.co.nz'),
+(2, 'Hamilton Hydraulics & Lift Services', '456 Oak Avenue', '07 855 9042', 'service@hamiltonhydraulics.co.nz'),
+(3, 'Easy Fixing', '789 Pine Road', '07 999 9042', 'service@easyfixing.co.nz'),
+(4, 'Fix It People', '321 Elm Street', '07 855 9999', 'service@fixitpeople.co.nz');
  
 insert into Maintenance(maintenanceID, unitID, staffID, companyID, scheduledDate, completedDate, notes) values
 (1, 3, 3, 1, '2026-08-25 09:00:00', '2026-08-29 09:00:00', 'Mower not starting, suspected fouled spark plug'),
