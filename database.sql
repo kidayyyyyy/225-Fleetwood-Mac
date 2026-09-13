@@ -4,7 +4,8 @@ create table Staff (
     staffID int primary key,
     firstName varchar(30) not null,
     lastName varchar(30),
-    phone varchar(30) not null,
+    -- Phone number must be in the format 000-000-0000 or 00-000-0000
+    phone varchar(20) not null check (phone regexp '^[0-9]{2,3}-[0-9]{3}-[0-9]{4}$'),
     email varchar(60),
     position varchar(30) not null check (position in ('Manager', 'Staff', 'Left')) 
 );
@@ -15,20 +16,19 @@ create table Customer (
     lastName varchar(30),
     -- Email is optional but phone is needed for contact
     email varchar(30),
-    phone varchar(30) not null
+    phone varchar(20) not null check (phone regexp '^[0-9]{2,3}-[0-9]{3}-[0-9]{4}$')
 );
 
 create table Branch (
     branchID int primary key,
     branchAddress varchar(100) not null,
-    phone varchar(10) not null,
+    phone varchar(20) not null check (phone regexp '^[0-9]{2,3}-[0-9]{3}-[0-9]{4}$'),
     managerID int not null,
 
     foreign key (managerID) references Staff(staffID)
 );
 
 create table Category (
-    -- This is the primary key
     categoryID int primary key,
     categoryName varchar(30) not null,
     -- If category is a subcategory, this will contain the ID of the parent category
@@ -82,7 +82,7 @@ create table ServiceCompany(
     companyID int primary key,
     companyName varchar(60) not null,
     companyAddress varchar(100) not null,
-    phone varchar(30) not null,
+    phone varchar(20) not null check (phone regexp '^[0-9]{2,3}-[0-9]{3}-[0-9]{4}$'),
     email varchar(60)
 );
 
@@ -106,17 +106,17 @@ create table Maintenance (
 -- Insert statements for sample data into the tables
 
 insert into Staff(staffID, firstName, lastName, phone, email, position) values
-(1, 'Grant', 'Ferguson', '027 481 2093', 'grant.ferguson@equipeaserentals.co.nz', 'Manager'),
-(2, 'Whitney', 'Marsh', '027 552 6614', 'whitney.marsh@equipeaserentals.co.nz', 'Manager'),
-(3, 'Tama', 'Ropata', '021 340 7758', 'tama.ropata@equipeaserentals.co.nz', 'Staff'),
-(4, 'Aroha', 'Winiata', '022 918 4471', 'aroha.winiata@equipeaserentals.co.nz', 'Staff'),
-(5, 'Colin', 'Baxter', '021 662 0038', 'colin.baxter@equipeaserentals.co.nz', 'Left');
+(1, 'Grant', 'Ferguson', '027-481-2093', 'grant.ferguson@equipeaserentals.co.nz', 'Manager'),
+(2, 'Whitney', 'Marsh', '027-552-6614', 'whitney.marsh@equipeaserentals.co.nz', 'Manager'),
+(3, 'Tama', 'Ropata', '021-340-7758', 'tama.ropata@equipeaserentals.co.nz', 'Staff'),
+(4, 'Aroha', 'Winiata', '022-918-4471', 'aroha.winiata@equipeaserentals.co.nz', 'Staff'),
+(5, 'Colin', 'Baxter', '021-662-0038', 'colin.baxter@equipeaserentals.co.nz', 'Left');
  
 insert into Branch(branchID, branchAddress, phone, managerID) values
-(1, '184 Anglesea Street, Hamilton Central, Hamilton 3204', '0783901220', 1),
-(2, '58 Maui Street, Pukete, Hamilton 3200', '0788504317', 2),
-(3, '20 Maui Street, Pukete, Hamilton 3200', '0788504317', 2),
-(4, '23 Maui Street, Pukete, Hamilton 3200', '0788504317', 2);
+(1, '184 Anglesea Street, Hamilton Central, Hamilton 3204', '078-390-1220', 1),
+(2, '58 Maui Street, Pukete, Hamilton 3200', '078-850-4317', 2),
+(3, '20 Maui Street, Pukete, Hamilton 3200', '078-850-4317', 2),
+(4, '23 Maui Street, Pukete, Hamilton 3200', '078-850-4317', 2);
  
 insert into Category(categoryID, categoryName, parentCategoryID) values
 (1, 'Power Tools', null),
@@ -143,16 +143,16 @@ insert into Unit(unitID, unitStatus, equipmentID, branchID) values
 (8, 'Available', 1, 2);
  
 insert into Customer(customerID, firstName, lastName, email, phone) values
-(1, 'Marcus', 'Delaney', 'marcus.delaney@gmail.com', '021 774 3390'),
-(2, 'Huia', 'Ngata', 'huia.ngata@outlook.com', '022 401 6685'),
-(3, 'Sione', 'Fifita', 'sione.fifita@yahoo.co.nz', '027 218 5539'),
-(4, 'Loneet', 'Velaidan', 'loneet.velaidan@yahoo.co.nz', '027 222 5539');
+(1, 'Marcus', 'Delaney', 'marcus.delaney@gmail.com', '021-774-3390'),
+(2, 'Huia', 'Ngata', 'huia.ngata@outlook.com', '022-401-6685'),
+(3, 'Sione', 'Fifita', 'sione.fifita@yahoo.co.nz', '027-218-5539'),
+(4, 'Loneet', 'Velaidan', 'loneet.velaidan@yahoo.co.nz', '027-222-5539');
  
 insert into ServiceCompany(companyID, companyName, companyAddress, phone, email) values
-(1, 'Waikato Small Engine Repairs', '123 Main Street', '07 847 3321', 'bookings@waikatosmallengine.co.nz'),
-(2, 'Hamilton Hydraulics & Lift Services', '456 Oak Avenue', '07 855 9042', 'service@hamiltonhydraulics.co.nz'),
-(3, 'Easy Fixing', '789 Pine Road', '07 999 9042', 'service@easyfixing.co.nz'),
-(4, 'Fix It People', '321 Elm Street', '07 855 9999', 'service@fixitpeople.co.nz');
+(1, 'Waikato Small Engine Repairs', '123 Main Street', '07-847-3321', 'bookings@waikatosmallengine.co.nz'),
+(2, 'Hamilton Hydraulics & Lift Services', '456 Oak Avenue', '07-855-9042', 'service@hamiltonhydraulics.co.nz'),
+(3, 'Easy Fixing', '789 Pine Road', '07-999-9042', 'service@easyfixing.co.nz'),
+(4, 'Fix It People', '321 Elm Street', '07-855-9999', 'service@fixitpeople.co.nz');
  
 insert into Maintenance(maintenanceID, unitID, staffID, companyID, scheduledDate, completedDate, notes) values
 (1, 3, 3, 1, '2026-08-25 09:00:00', '2026-08-29 09:00:00', 'Mower not starting, suspected fouled spark plug'),
@@ -168,6 +168,6 @@ insert into RentSchedule(rentalID, customerID, unitID, pickupBranchID, returnBra
 
 -- Select statements
 
-select Equipment.equipmentID, Equipment.equipmentName, Unit.unitStatus, Branch.branchAddress from Equipment
+select Unit.unitID, Equipment.equipmentName, Unit.unitStatus, Branch.branchAddress from Equipment
 inner join Unit on Equipment.equipmentID = Unit.equipmentID
 inner join Branch on Unit.branchID = Branch.branchID;
